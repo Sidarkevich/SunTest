@@ -15,7 +15,6 @@ public class DataLoader : MonoBehaviour
 
     [SerializeField] private ImageScreen _screen;
 
-    // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(LoadTextureFromServer());
@@ -23,15 +22,20 @@ public class DataLoader : MonoBehaviour
 
     IEnumerator LoadTextureFromServer()
     {
-        for (int i = 0; i < _loadCount; i++)
+        var errorsCount = 0;
+        var nextId = 1;
+
+        while (errorsCount < 2)
         {
-            using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture($"http://data.ikppbb.com/test-task-unity-data/pics/{i+1}.jpg"))
+            using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture($"http://data.ikppbb.com/test-task-unity-data/pics/{nextId}.jpg"))
             {
                 yield return uwr.SendWebRequest();
 
                 if (uwr.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.Log(uwr.error);
+                    Debug.Log($"{uwr.error} while loading: {nextId}");
+
+                    errorsCount++;
                 }
                 else
                 {
@@ -42,6 +46,8 @@ public class DataLoader : MonoBehaviour
 
                     cell.CellSelectedEvent.AddListener(_screen.Setup);
                 }
+
+                nextId++;
             }
         }
     }
