@@ -15,7 +15,7 @@ public class Cell : MonoBehaviour
         _image.sprite = sprite;
     }
 
-    private void OnMouseUpAsButton()
+    public void Clicked()
     {
         CellSelectedEvent?.Invoke(_image.sprite);
     }
