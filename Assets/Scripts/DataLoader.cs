@@ -10,8 +10,10 @@ public class DataLoader : MonoBehaviour
     const string url = "http://data.ikppbb.com/test-task-unity-data/pics/33.jpg";
 
     [SerializeField] private int _loadCount;
-    [SerializeField] private Image _prefab;
+    [SerializeField] private Cell _prefab;
     [SerializeField] private Transform _content;
+
+    [SerializeField] private ImageScreen _screen;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +37,10 @@ public class DataLoader : MonoBehaviour
                 {
                     // Get downloaded asset bundle
                     var texture = DownloadHandlerTexture.GetContent(uwr);
-                    var image = Instantiate(_prefab, Vector3.zero, Quaternion.identity, _content);
-                    image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+                    var cell = Instantiate(_prefab, Vector3.zero, Quaternion.identity, _content);
+                    cell.Setup(Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero));
+
+                    cell.CellSelectedEvent.AddListener(_screen.Setup);
                 }
             }
         }
