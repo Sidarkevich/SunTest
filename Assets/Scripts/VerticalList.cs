@@ -23,10 +23,14 @@ public class VerticalList : MonoBehaviour
 
     private List<Sprite> _content;
  
-    public void Setup(List<Sprite> content)
+    public void Init(List<Sprite> content)
     {
         _content = content;
+        Setup();
+    }
 
+    public void Setup()
+    {
         _container.anchoredPosition3D = Vector3.zero;
 
         Vector2 prefabScale = _prefab.rect.size;
@@ -37,7 +41,7 @@ public class VerticalList : MonoBehaviour
 
         _visibleCount = Mathf.CeilToInt(_viewPort.rect.size.y / _prefabSize);
 
-        _numItems = Mathf.Min(content.Count, _visibleCount + _numBuffer);
+        _numItems = Mathf.Min(_content.Count, _visibleCount + _numBuffer);
 
         _startPos = _container.anchoredPosition3D - (_offsetVec * _containerHalfSize) + (_offsetVec * prefabScale.y * 0.5f);
 
@@ -54,17 +58,17 @@ public class VerticalList : MonoBehaviour
             obj.SetActive(true);
 
             var cell = obj.GetComponent<Cell>();
-            cell.Setup(content[i]);
+            cell.Setup(_content[i]);
         }
 
         _container.anchoredPosition3D += _offsetVec * (_containerHalfSize - _viewPort.rect.size.y * 0.5f);
     }
 
-    public void ReorderItemsByPos(float normPos)
+    public void ReorderItemsByPos(Vector2 normPos)
     {
-        normPos = 1f - normPos;
+        normPos.y = 1f - normPos.y;
 
-        int numOutOfView = Mathf.CeilToInt(normPos * (66 - _visibleCount));   //number of elements beyond the left boundary (or top)
+        int numOutOfView = Mathf.CeilToInt(normPos.y * (_content.Count - _visibleCount));   //number of elements beyond the left boundary (or top)
         int firstIndex = Mathf.Max(0, numOutOfView - _numBuffer);   //index of first element beyond the left boundary (or top)
         int originalIndex = firstIndex % _numItems;
 
@@ -77,8 +81,6 @@ public class VerticalList : MonoBehaviour
         }
         for (int i = 0; i < originalIndex; i++)
         {
-            Debug.Log(newIndex);
-
             moveItemByIndex(listItemRect[i], newIndex);
             listItems[i].GetComponent<Cell>().Setup(_content[newIndex]);
             newIndex++;
