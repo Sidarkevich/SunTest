@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class VerticalList : MonoBehaviour
 {
+    [SerializeField] private ContentLoader _loader;
+
     [SerializeField] private RectTransform _container;
     [SerializeField] private RectTransform _viewPort;
     [SerializeField] private RectTransform _prefab;
@@ -26,11 +28,7 @@ public class VerticalList : MonoBehaviour
         Vector2 prefabScale = _prefab.rect.size;
         _prefabSize = prefabScale.y + _spacing;
 
-        //_container.sizeDelta = new Vector2(prefabScale.x, _prefabSize * 10);
-        //_containerHalfSize = _container.rect.size.y * 0.5f;
-
         _visibleCount = Mathf.CeilToInt(_viewPort.rect.size.y / _prefabSize);
-
 
         _numItems = Mathf.Min(10, _visibleCount + _numBuffer);
 
@@ -47,7 +45,6 @@ public class VerticalList : MonoBehaviour
 
             listItems.Add(rect);
             obj.SetActive(true);
-            // set content
         }
 
         _container.anchoredPosition3D += _offsetVec * (_containerHalfSize - _viewPort.rect.size.y * 0.5f);
