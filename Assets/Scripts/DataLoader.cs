@@ -41,10 +41,10 @@ public class DataLoader : MonoBehaviour
                 {
                     // Get downloaded asset bundle
                     var texture = DownloadHandlerTexture.GetContent(uwr);
-                    var cell = Instantiate(_prefab, Vector3.zero, Quaternion.identity, _content);
-                    cell.Setup(Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero));
+                    // var cell = Instantiate(_prefab, Vector3.zero, Quaternion.identity, _content);
+                    // cell.Setup(Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero));
 
-                    cell.CellSelectedEvent.AddListener(_screen.Setup);
+                    // cell.CellSelectedEvent.AddListener(_screen.Setup);
                 }
 
                 nextId++;
