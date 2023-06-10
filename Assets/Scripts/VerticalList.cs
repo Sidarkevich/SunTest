@@ -9,6 +9,8 @@ public class VerticalList : MonoBehaviour
     [SerializeField] private RectTransform _prefab;
     [SerializeField] private float _spacing;
 
+    [SerializeField] private ImageScreen _screen;
+
     private float _prefabSize;
     private float _containerHalfSize;
     private int _visibleCount;
@@ -59,6 +61,7 @@ public class VerticalList : MonoBehaviour
 
             var cell = obj.GetComponent<Cell>();
             cell.Setup(_content[i]);
+            cell.CellSelectedEvent.AddListener(_screen.Setup);
         }
 
         _container.anchoredPosition3D += _offsetVec * (_containerHalfSize - _viewPort.rect.size.y * 0.5f);
@@ -73,8 +76,8 @@ public class VerticalList : MonoBehaviour
 
         normPos.y = 1f - normPos.y;
 
-        int numOutOfView = Mathf.CeilToInt(normPos.y * (_content.Count - _visibleCount));   //number of elements beyond the left boundary (or top)
-        int firstIndex = Mathf.Max(0, numOutOfView - _numBuffer);   //index of first element beyond the left boundary (or top)
+        int numOutOfView = Mathf.CeilToInt(normPos.y * (_content.Count - _visibleCount));
+        int firstIndex = Mathf.Max(0, numOutOfView - _numBuffer);
         int originalIndex = firstIndex % _numItems;
 
         int newIndex = firstIndex;
