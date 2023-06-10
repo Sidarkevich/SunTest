@@ -66,6 +66,11 @@ public class VerticalList : MonoBehaviour
 
     public void ReorderItemsByPos(Vector2 normPos)
     {
+        if (normPos.y < 0)
+        {
+            return;
+        }
+
         normPos.y = 1f - normPos.y;
 
         int numOutOfView = Mathf.CeilToInt(normPos.y * (_content.Count - _visibleCount));   //number of elements beyond the left boundary (or top)
