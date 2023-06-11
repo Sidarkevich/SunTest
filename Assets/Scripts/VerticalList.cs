@@ -38,12 +38,12 @@ public class VerticalList : MonoBehaviour
         Vector2 prefabScale = _prefab.rect.size;
         _prefabSize = prefabScale.y + _spacing;
 
-        _container.sizeDelta = new Vector2(prefabScale.x, _prefabSize * _content.Count);
+        _container.sizeDelta = new Vector2(prefabScale.x, _prefabSize * _content.Count / 2);
         _containerHalfSize = _container.rect.size.y * 0.5f;
 
         _visibleCount = Mathf.CeilToInt(_viewPort.rect.size.y / _prefabSize);
 
-        _numItems = Mathf.Min(_content.Count, _visibleCount + _numBuffer);
+        _numItems = Mathf.Min(_content.Count / 2, _visibleCount + _numBuffer);
 
         _startPos = _container.anchoredPosition3D - (_offsetVec * _containerHalfSize) + (_offsetVec * prefabScale.y * 0.5f);
 
@@ -59,9 +59,9 @@ public class VerticalList : MonoBehaviour
 
             obj.SetActive(true);
 
-            var cell = obj.GetComponent<Cell>();
-            cell.Setup(_content[i]);
-            cell.CellSelectedEvent.AddListener(_screen.Setup);
+            var cells = obj.GetComponent<CellsLine>();
+            cells.Setup(new List<Sprite>() {_content[i*2], _content[i*2+1]});
+            //cell.CellSelectedEvent.AddListener(_screen.Setup);
         }
 
         _container.anchoredPosition3D += _offsetVec * (_containerHalfSize - _viewPort.rect.size.y * 0.5f);
@@ -76,7 +76,7 @@ public class VerticalList : MonoBehaviour
 
         normPos.y = 1f - normPos.y;
 
-        int numOutOfView = Mathf.CeilToInt(normPos.y * (_content.Count - _visibleCount));
+        int numOutOfView = Mathf.CeilToInt(normPos.y * ((_content.Count / 2) - _visibleCount));
         int firstIndex = Mathf.Max(0, numOutOfView - _numBuffer);
         int originalIndex = firstIndex % _numItems;
 
@@ -84,13 +84,13 @@ public class VerticalList : MonoBehaviour
         for (int i = originalIndex; i < _numItems; i++)
         {
             moveItemByIndex(listItemRect[i], newIndex);
-            listItems[i].GetComponent<Cell>().Setup(_content[newIndex]);
+            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]});
             newIndex++;
         }
         for (int i = 0; i < originalIndex; i++)
         {
             moveItemByIndex(listItemRect[i], newIndex);
-            listItems[i].GetComponent<Cell>().Setup(_content[newIndex]);
+            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]});
             newIndex++;
         }
     }
