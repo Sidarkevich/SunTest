@@ -60,8 +60,7 @@ public class VerticalList : MonoBehaviour
             obj.SetActive(true);
 
             var cells = obj.GetComponent<CellsLine>();
-            cells.Setup(new List<Sprite>() {_content[i*2], _content[i*2+1]});
-            //cell.CellSelectedEvent.AddListener(_screen.Setup);
+            cells.Setup(new List<Sprite>() {_content[i*2], _content[i*2+1]}, _screen.Setup);
         }
 
         _container.anchoredPosition3D += _offsetVec * (_containerHalfSize - _viewPort.rect.size.y * 0.5f);
@@ -84,13 +83,13 @@ public class VerticalList : MonoBehaviour
         for (int i = originalIndex; i < _numItems; i++)
         {
             moveItemByIndex(listItemRect[i], newIndex);
-            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]});
+            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]}, _screen.Setup);
             newIndex++;
         }
         for (int i = 0; i < originalIndex; i++)
         {
             moveItemByIndex(listItemRect[i], newIndex);
-            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]});
+            listItems[i].GetComponent<CellsLine>().Setup(new List<Sprite>() {_content[newIndex*2], _content[newIndex*2+1]}, _screen.Setup);
             newIndex++;
         }
     }
