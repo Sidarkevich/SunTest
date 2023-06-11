@@ -26,7 +26,8 @@ public class LoadingBar : MonoBehaviour
         foreach (var hold in thresholds)
         {
             Debug.Log("Hold: " + hold);
-            sequence.Append(_fillImage.DOFillAmount(hold * _loadingTime, _loadingTime / _thresholdsCount+1));
+            sequence.Append(_fillImage.DOFillAmount(hold, (_loadingTime * hold) / 2));
+            sequence.AppendInterval((_loadingTime * hold) / 2);
         }
         sequence.Append(_fillImage.DOFillAmount(1, _loadingTime / _thresholdsCount+1));
     }
