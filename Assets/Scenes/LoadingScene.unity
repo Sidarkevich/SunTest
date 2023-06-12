@@ -223,7 +223,7 @@ MonoBehaviour:
   ContentLoadedEvent:
     m_PersistentCalls:
       m_Calls: []
-  _allowableErrorsCount: 0
+  _allowableErrorsCount: 2
 --- !u!4 &321217893
 Transform:
   m_ObjectHideFlags: 0
