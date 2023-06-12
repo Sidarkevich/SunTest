@@ -7,9 +7,16 @@ using DG.Tweening;
 
 public class LoadingBar : MonoBehaviour
 {
+    public UnityEvent BarFilledEvent;
+
     [SerializeField] private float _loadingTime;
     [SerializeField] private int _thresholdsCount;
     [SerializeField] private Image _fillImage;
+
+    private void Start()
+    {
+        StartAnimation();
+    }
 
     public void StartAnimation()
     {
